@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const express = require('express');
 const bookingRateLimiter =
-  require('./middleware/bookingRateLimiter');
+  require('../middleware/authRateLimiter');
 
 async function runTests() {
   const app = express();

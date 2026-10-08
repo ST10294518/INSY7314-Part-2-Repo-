@@ -1,6 +1,6 @@
 
 const assert = require('node:assert/strict');
-const validateBooking = require('./middleware/bookingValidation');
+const validateBooking = require('../middleware/authRateLimiter');
 
 function runTest(body) {
   let result = {
