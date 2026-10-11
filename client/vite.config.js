@@ -15,12 +15,25 @@ const previewCsp = [
   "frame-ancestors 'none'",
 ].join('; ')
 
+const apiProxy = {
+  '/api': {
+    target: 'https://localhost:5443',
+    changeOrigin: true,
+    secure: false,
+  },
+}
+
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 5173,
+    proxy: apiProxy,
+  },
   preview: {
     host: 'localhost',
     port: 4173,
     strictPort: true,
+    proxy: apiProxy,
     headers: {
       'Content-Security-Policy': previewCsp,
       'X-Content-Type-Options': 'nosniff',
