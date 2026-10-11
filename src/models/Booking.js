@@ -40,6 +40,15 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+
+    // One unique key per Client booking operation.
+    // Optional for compatibility with existing database records.
+    idempotencyKey: {
+      type: String,
+      trim: true,
+      minlength: 16,
+      maxlength: 128,
+    },
   },
   {
     timestamps: true,
@@ -49,6 +58,20 @@ const bookingSchema = new mongoose.Schema(
 
 bookingSchema.index({ client: 1, createdAt: -1 });
 bookingSchema.index({ freelancer: 1, createdAt: -1 });
+
+// Prevent the same Client from creating two Bookings
+// with the same idempotency key.
+// Exclude older records that do not contain the key.
+bookingSchema.index(
+  { client: 1, idempotencyKey: 1 },
+  {
+    unique: true,
+    name: 'unique_client_booking_request',
+    partialFilterExpression: {
+      idempotencyKey: { $type: 'string' },
+    },
+  }
+);
 
 module.exports =
   mongoose.models.Booking ||
