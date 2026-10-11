@@ -1,0 +1,141 @@
+.freelancer-page {
+  padding: 32px;
+  text-align: left;
+  color: var(--text);
+}
+
+.freelancer-page * {
+  box-sizing: border-box;
+}
+
+.freelancer-header,
+.freelancer-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.freelancer-header {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.freelancer-brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.freelancer-brand span,
+.freelancer-eyebrow {
+  color: var(--accent);
+}
+
+.freelancer-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.freelancer-account {
+  margin: 32px 0;
+}
+
+.freelancer-page h1 {
+  font-size: 36px;
+  margin: 12px 0;
+}
+
+.freelancer-page h3 {
+  color: var(--text-h);
+  margin: 0 0 12px;
+}
+
+.freelancer-page button {
+  padding: 10px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  cursor: pointer;
+}
+
+.freelancer-page button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.freelancer-page button:focus-visible,
+.freelancer-page a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.freelancer-page dl {
+  display: grid;
+  gap: 12px;
+}
+
+.freelancer-page dt {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.freelancer-page dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.freelancer-section-heading {
+  margin-bottom: 20px;
+}
+
+.freelancer-section-heading h2 {
+  margin: 0;
+}
+
+.freelancer-gig-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.freelancer-gig-card,
+.freelancer-empty,
+.freelancer-error {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.freelancer-description {
+  white-space: pre-wrap;
+}
+
+.freelancer-error {
+  border-color: #d97706;
+}
+
+.freelancer-error a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .freelancer-page {
+    padding: 20px;
+  }
+
+  .freelancer-page h1 {
+    font-size: 28px;
+  }
+}

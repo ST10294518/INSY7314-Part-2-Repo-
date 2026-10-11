@@ -5,7 +5,6 @@ import {
   Route,
   Routes,
   Link,
-  useNavigate,
 } from 'react-router-dom'
 
 import { AuthProvider } from './context/AuthContext'
@@ -14,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ClientDashboard from './pages/ClientDashboard'
+import FreelancerDashboard from './pages/FreelancerDashboard'
 
 function Home() {
   const { user } = useAuth()
@@ -27,44 +27,6 @@ function Home() {
   }
 
   return <Navigate to="/login" replace />
-}
-
-function FreelancerPlaceholder() {
-  const { user, logout } = useAuth()
-  const navigate = useNavigate()
-
-  function handleLogout() {
-    logout()
-    navigate('/login', { replace: true })
-  }
-
-  return (
-    <main className="dashboard">
-      <header className="dashboard-header">
-        <Link className="brand brand-dark" to="/">
-          HustleHub<span>+</span>
-        </Link>
-
-        <button
-          type="button"
-          className="outline-button"
-          onClick={handleLogout}
-        >
-          Log out
-        </button>
-      </header>
-
-      <div className="dashboard-content">
-        <span className="eyebrow">FREELANCER ACCOUNT</span>
-        <h1>Welcome, Freelancer</h1>
-        <p>Signed in as {user.email}.</p>
-        <p>
-          The Freelancer dashboard will be connected
-          during group integration.
-        </p>
-      </div>
-    </main>
-  )
 }
 
 function Unauthorised() {
@@ -107,7 +69,7 @@ export default function App() {
           >
             <Route
               path="/freelancer"
-              element={<FreelancerPlaceholder />}
+              element={<FreelancerDashboard />}
             />
           </Route>
 
