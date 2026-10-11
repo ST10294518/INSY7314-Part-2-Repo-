@@ -44,4 +44,3 @@ function validateBooking(req, res, next) {
 }
 
 module.exports = validateBooking;
-
