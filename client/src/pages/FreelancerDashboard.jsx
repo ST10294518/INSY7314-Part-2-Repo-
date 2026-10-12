@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import { getOwnGigs } from '../services/freelancerApi'
 import CreateGigForm from '../components/CreateGigForm'
 import EditGigForm from '../components/EditGigForm'
+import DeleteGigConfirmation from '../components/DeleteGigConfirmation'
 import '../styles/freelancer.css'
 
 export default function FreelancerDashboard() {
@@ -74,6 +75,12 @@ export default function FreelancerDashboard() {
   function handleGigSaved() {
     setEditingGigId(null)
     setGigSuccess('Your gig was updated successfully.')
+    refreshGigs()
+  }
+
+  function handleGigDeleted() {
+    setEditingGigId(null)
+    setGigSuccess('Your gig was deleted successfully.')
     refreshGigs()
   }
 
@@ -175,6 +182,15 @@ export default function FreelancerDashboard() {
                   >
                     Edit gig
                   </button>
+                )}
+                {editingGigId !== gig._id && (
+                  <div className="freelancer-delete-controls">
+                    <DeleteGigConfirmation
+                      gig={gig}
+                      token={token}
+                      onDeleted={handleGigDeleted}
+                    />
+                  </div>
                 )}
               </li>
             ))}

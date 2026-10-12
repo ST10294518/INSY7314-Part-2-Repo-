@@ -29,3 +29,10 @@ export function updateGig(gigId, gig, token) {
     }),
   })
 }
+
+export function deleteGig(gigId, token) {
+  return apiRequest(`/gigs/${encodeURIComponent(gigId)}`, {
+    method: 'DELETE',
+    token,
+  })
+}

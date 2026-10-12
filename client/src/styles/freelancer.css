@@ -190,3 +190,17 @@
   justify-self: start;
   margin-top: 8px;
 }
+
+.freelancer-page .freelancer-delete-controls {
+  margin-top: 16px;
+}
+
+.freelancer-page .freelancer-delete-controls section {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.freelancer-page .freelancer-delete-controls section button {
+  margin-top: 12px;
+  margin-right: 12px;
+}
