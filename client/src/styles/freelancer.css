@@ -3,8 +3,9 @@
   --text-h: #162443;
   --bg: #ffffff;
   --border: #e0e6f1;
-  --accent: #315de0;
-  --accent-bg: #edf2ff;
+  --accent: #F6B7C7;
+  --accent-bg: #F6B7C7;
+
   min-height: 100vh;
   padding: 0 0 65px;
   background: #f6f8fc;
@@ -51,11 +52,11 @@
 }
 
 .freelancer-brand span {
-  color: #8fb1ff;
+  color: #F6B7C7;
 }
 
 .freelancer-eyebrow {
-  color: #5372cc;
+  color: #263d78;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -101,7 +102,8 @@
 }
 
 .freelancer-page button:hover:not(:disabled) {
-  background: #f1f5ff;
+  background: #F6B7C7;
+  color: #17243d;
 }
 
 .freelancer-page button:disabled {
@@ -111,7 +113,7 @@
 
 .freelancer-page button:focus-visible,
 .freelancer-page a:focus-visible {
-  outline: 3px solid #5174e4;
+  outline: 3px solid #17243d;
   outline-offset: 3px;
 }
 
@@ -191,7 +193,7 @@
 .freelancer-error a {
   display: inline-block;
   margin-top: 12px;
-  color: var(--accent);
+  color: #263d78;
 }
 
 .freelancer-page .freelancer-create {
@@ -241,8 +243,8 @@
 .freelancer-page .freelancer-create input:focus,
 .freelancer-page .freelancer-create textarea:focus {
   outline: none;
-  border-color: #5174e4;
-  box-shadow: 0 0 0 3px #5174e422;
+  border-color: #F6B7C7;
+  box-shadow: 0 0 0 3px #F6B7C755;
 }
 
 .freelancer-page .freelancer-create button {
@@ -252,14 +254,15 @@
 
 .freelancer-page .freelancer-create button[type="submit"] {
   padding: 15px 20px;
-  background: #315de0;
-  border-color: #315de0;
-  color: white;
+  background: #F6B7C7;
+  border-color: #F6B7C7;
+  color: #17243d;
   font-weight: 700;
 }
 
 .freelancer-page .freelancer-create button[type="submit"]:hover:not(:disabled) {
-  background: #254fc8;
+  background: #F6B7C7;
+  filter: brightness(0.96);
 }
 
 .freelancer-page .freelancer-delete-controls {
