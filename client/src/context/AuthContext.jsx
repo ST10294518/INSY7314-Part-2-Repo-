@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { authApi, setUnauthorizedHandler } from '../services/api'
 import { AuthContext } from './AuthStateContext'
 
+const ALLOWED_ROLES = ['client', 'freelancer', 'admin']
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
@@ -24,12 +26,11 @@ export function AuthProvider({ children }) {
       throw new Error('Invalid authentication response.')
     }
 
-    // Verify the token and current account role with the backend.
     const verified = await authApi.me(result.token)
 
     if (
       !verified?.user ||
-      !['client', 'freelancer'].includes(verified.user.role)
+      !ALLOWED_ROLES.includes(verified.user.role)
     ) {
       throw new Error('Unable to verify account permissions.')
     }
@@ -56,6 +57,11 @@ export function AuthProvider({ children }) {
     setLoading(true)
 
     try {
+      // Public users must never self-register as Admins.
+      if (!['client', 'freelancer'].includes(role)) {
+        throw new Error('Invalid registration role.')
+      }
+
       const result = await authApi.register(
         email,
         password,
