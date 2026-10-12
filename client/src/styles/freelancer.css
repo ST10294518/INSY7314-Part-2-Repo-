@@ -4,8 +4,7 @@
   --bg: #ffffff;
   --border: #e0e6f1;
   --accent: #F57CB5;
-  --accent-bg: #F57CB5
-
+  --accent-bg: #F57CB5;
   min-height: 100vh;
   padding: 0 0 65px;
   background: #f6f8fc;
@@ -244,7 +243,7 @@
 .freelancer-page .freelancer-create textarea:focus {
   outline: none;
   border-color: #F57CB5;
-  box-shadow: 0 0 0 3px #F6B7C755;
+  box-shadow: 0 0 0 3px #F57CB555;
 }
 
 .freelancer-page .freelancer-create button {
