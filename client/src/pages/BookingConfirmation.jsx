@@ -35,15 +35,23 @@ export default function BookingConfirmation() {
     let cancelled = false
 
     async function loadBooking() {
+      setLoading(true)
+      setError('')
+
       try {
         const response = await bookingApi.getById(id, token)
-        if (!cancelled) setBooking(response.booking)
+
+        if (!cancelled) {
+          setBooking(response.booking)
+        }
       } catch (err) {
         if (!cancelled) {
           setError(err.message || 'Unable to load the Booking.')
         }
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) {
+          setLoading(false)
+        }
       }
     }
 
@@ -66,25 +74,40 @@ export default function BookingConfirmation() {
     return (
       <main className="dashboard-content">
         <h1>Booking unavailable</h1>
-        <p role="alert">{error || 'Booking not found.'}</p>
-        <Link to="/client/bookings">View My Bookings</Link>
+        <p role="alert">
+          {error || 'Booking not found.'}
+        </p>
+        <Link to="/client/bookings">
+          View My Bookings
+        </Link>
       </main>
     )
   }
 
+  const confirmed = booking.status === 'confirmed'
+  const paymentCompleted =
+    confirmed &&
+    (!transaction || transaction.status === 'completed')
+
   return (
     <main className="dashboard-content">
       <div className="confirmation-card">
-        <span className="confirmation-icon" aria-hidden="true">
-          ✓
+        <span className="eyebrow">
+          BOOKING STATUS
         </span>
 
-        <span className="eyebrow">BOOKING CONFIRMATION</span>
-        <h1>Booking confirmed!</h1>
+        <h1>
+          {paymentCompleted
+            ? 'Booking confirmed!'
+            : booking.status === 'cancelled'
+              ? 'Booking cancelled'
+              : 'Booking not confirmed'}
+        </h1>
 
         <p>
-          Your Booking has been created successfully
-          using a simulated payment.
+          {paymentCompleted
+            ? 'Your Booking has been confirmed using our simulated payment system.'
+            : 'This Booking is not currently confirmed. Please check its status before attempting another payment.'}
         </p>
 
         <div className="confirmation-summary">
@@ -94,7 +117,7 @@ export default function BookingConfirmation() {
           </div>
 
           <div>
-            <span>Payment amount</span>
+            <span>Booking amount</span>
             <strong>{formatPrice(booking.price)}</strong>
           </div>
 
@@ -104,34 +127,36 @@ export default function BookingConfirmation() {
           </div>
 
           <div>
-            <span>Payment type</span>
+            <span>Payment method</span>
             <strong>Simulated payment</strong>
           </div>
 
           {transaction && (
-            <div>
-              <span>Transaction reference</span>
-              <strong>{transaction._id}</strong>
-            </div>
+            <>
+              <div>
+                <span>Transaction reference</span>
+                <strong>{transaction._id}</strong>
+              </div>
+              <div>
+                <span>Transaction status</span>
+                <strong>{transaction.status}</strong>
+              </div>
+            </>
           )}
         </div>
 
         <p className="booking-note">
           No actual money has been charged.
+          {confirmed && !transaction
+            ? ' Transaction details are unavailable after a page refresh.'
+            : ''}
         </p>
 
         <div className="confirmation-actions">
-          <Link
-            to="/client/bookings"
-            className="primary-button"
-          >
+          <Link to="/client/bookings" className="primary-button">
             View My Bookings
           </Link>
-
-          <Link
-            to="/client"
-            className="outline-button"
-          >
+          <Link to="/client" className="outline-button">
             Explore More Gigs
           </Link>
         </div>
