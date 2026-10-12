@@ -38,3 +38,23 @@ Report: Evidence/Testing/freelancer-react-results.json
 
 To regenerate the report, run inside client:
 npm test -- --reporter=verbose --reporter=json --outputFile=../Evidence/Testing/freelancer-react-results.json
+
+## Client React tests
+
+The additional Client suites contain 16 tests:
+
+- ClientDashboard: 5 tests for rendering, filters, empty results,
+  API-error recovery and logout.
+- GigDetails: 7 tests for rendering, booking submission, confirmation
+  navigation, retry-key preservation, pending controls and error messages.
+- MyBookings: 4 tests for saved details, empty history, retry recovery
+  and missing Gig references.
+
+The combined Client/Freelancer run passed 41 tests across nine files.
+API responses are mocked; these tests do not access MongoDB.
+Separate Newman integration tests verify actual API behaviour.
+
+Combined report: Evidence/Testing/client-freelancer-react-results.json
+
+Regenerate from the repository root:
+npm --prefix client test -- --reporter=verbose --reporter=json --outputFile=../Evidence/Testing/client-freelancer-react-results.json
