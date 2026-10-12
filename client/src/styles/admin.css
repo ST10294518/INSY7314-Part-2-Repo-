@@ -1,5 +1,7 @@
-
 .admin-layout {
+  --admin-pink: #F6B7C7;
+  --admin-text: #17243d;
+
   display: grid;
   grid-template-columns: 250px minmax(0, 1fr);
   min-height: 100vh;
@@ -8,8 +10,8 @@
 }
 
 .admin-sidebar {
-  background: #142344;
-  color: white;
+  background: var(--admin-pink);
+  color: var(--admin-text);
   padding: 32px 20px;
   display: flex;
   flex-direction: column;
@@ -20,14 +22,15 @@
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -1px;
+  color: var(--admin-text);
 }
 
 .admin-brand span {
-  color: #86a7ff;
+  color: var(--admin-text);
 }
 
 .admin-sidebar-caption {
-  color: #9aafd6;
+  color: var(--admin-text);
   font-size: 11px;
   letter-spacing: 2px;
   font-weight: 700;
@@ -45,32 +48,41 @@
   text-align: left;
   border: 0;
   border-radius: 10px;
-  color: #d5dff5;
+  color: var(--admin-text);
   background: transparent;
   font-weight: 600;
 }
 
 .admin-nav-item:hover,
 .admin-nav-item.active {
-  background: #3156a0;
-  color: white;
+  background: white;
+  color: var(--admin-text);
+}
+
+.admin-nav-item.active {
+  box-shadow: inset 3px 0 0 var(--admin-text);
 }
 
 .admin-nav-item:focus-visible,
 .admin-logout:focus-visible,
-.admin-refresh:focus-visible {
-  outline: 3px solid #9cb5ff;
+.admin-refresh:focus-visible,
+.admin-pagination button:focus-visible {
+  outline: 3px solid var(--admin-text);
   outline-offset: 2px;
 }
 
 .admin-logout {
   margin-top: auto;
-  border: 1px solid #6a7ca3;
-  color: white;
+  border: 1px solid var(--admin-text);
+  color: var(--admin-text);
   background: transparent;
   padding: 13px;
   border-radius: 10px;
   font-weight: 700;
+}
+
+.admin-logout:hover {
+  background: white;
 }
 
 .admin-main {
@@ -90,7 +102,7 @@
   font-size: 12px;
   letter-spacing: 2px;
   font-weight: 800;
-  color: #4266bb;
+  color: #263d78;
 }
 
 .admin-topbar h1 {
@@ -127,8 +139,8 @@
   border-radius: 50%;
   width: 44px;
   height: 44px;
-  background: #315de0;
-  color: white;
+  background: var(--admin-pink);
+  color: var(--admin-text);
   font-weight: 800;
   flex-shrink: 0;
 }
@@ -157,10 +169,15 @@
 .admin-pagination button {
   padding: 11px 16px;
   border-radius: 9px;
-  background: #315de0;
+  background: var(--admin-pink);
   border: 0;
-  color: white;
+  color: var(--admin-text);
   font-weight: 700;
+}
+
+.admin-refresh:hover:not(:disabled),
+.admin-pagination button:hover:not(:disabled) {
+  filter: brightness(0.96);
 }
 
 .admin-refresh:disabled,
@@ -219,8 +236,8 @@
 }
 
 .admin-table th {
-  color: #536686;
-  background: #f5f8ff;
+  color: var(--admin-text);
+  background: var(--admin-pink);
   font-weight: 750;
 }
 
