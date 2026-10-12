@@ -176,8 +176,7 @@ returns safe responses for malformed JSON, oversized bodies, invalid data,
 duplicate records, missing routes and unexpected errors.
 
 Member 2 provides Login, Registration and Booking rate limiting.
-Their middleware suites passed during integration. Full endpoint rate-limit
-verification is part of the remaining group integration testing.
+Their middleware suites and the separate endpoint rate-limit tests passed.
 
 Frontend preview sends CSP on the HTML response. It restricts scripts and
 styles to self, blocks inline scripts and event handlers, blocks objects
@@ -232,9 +231,7 @@ network change. Successful retries do not establish a permanent fix.
 Check current IP access, DNS, connectivity and backend startup; do not
 disable MongoDB TLS verification.
 
-Remaining work includes additional
-feature screenshots, Admin responsibility/role demonstration, final
-Client/Booking/Transaction tests and group demonstration/submission evidence.
+Remaining work includes Admin responsibility/role demonstration, Client React tests, final group review and demonstration/submission evidence.
 Passing Member 1 tests does not establish full rubric completion.
 
 ## Freelancer screenshot evidence
@@ -265,3 +262,24 @@ remained unset.
 - [Client inline script blocked](Evidence/Security/client-csp-inline-script-blocked.png)
 
 These checks apply to the local Vite preview configuration.
+
+## Booking and Transaction integration results
+
+The live application rehearsal passed:
+Client booking created a matching MongoDB Transaction, the Freelancer
+received the Booking, income increased by R125.50, and the completed
+transaction count increased by one. Results persisted after refresh.
+
+Automated Newman results:
+
+- Booking/Transaction integration: 38 requests and 78 assertions passed.
+- Endpoint rate limits: 34 requests and 44 assertions passed.
+- Both runs had zero failures and exited with code 0.
+
+The integration suite verifies trusted pricing, identities, sequential
+idempotent retries, roles, ownership, JWT rejection and isolated income.
+The rate-limit suite verifies Login, Registration and Booking limits
+through the actual API endpoints.
+
+See [Integration test instructions](Postman%20Collection/README-Part2-Integration.md)
+for commands, test data, evidence and limitations.
