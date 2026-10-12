@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Navigate,
@@ -18,6 +19,7 @@ import MyBookings from './pages/MyBookings'
 import BookingDetails from './pages/BookingDetails'
 import BookingConfirmation from './pages/BookingConfirmation'
 import FreelancerDashboard from './pages/FreelancerDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 function Home() {
   const { user } = useAuth()
@@ -30,6 +32,10 @@ function Home() {
     return <Navigate to="/freelancer" replace />
   }
 
+  if (user?.role === 'admin') {
+    return <Navigate to="/admin" replace />
+  }
+
   return <Navigate to="/login" replace />
 }
 
@@ -37,7 +43,9 @@ function Unauthorised() {
   return (
     <main className="message-page">
       <h1>Access restricted</h1>
-      <p>Your account does not have permission to view this page.</p>
+      <p>
+        Your account does not have permission to view this page.
+      </p>
       <Link to="/">Return to Home</Link>
     </main>
   )
@@ -52,10 +60,21 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          <Route element={<ProtectedRoute allowedRoles={['client']} />}>
-            <Route path="/client" element={<ClientDashboard />} />
-            <Route path="/client/gigs/:id" element={<GigDetails />} />
-            <Route path="/client/bookings" element={<MyBookings />} />
+          <Route
+            element={<ProtectedRoute allowedRoles={['client']} />}
+          >
+            <Route
+              path="/client"
+              element={<ClientDashboard />}
+            />
+            <Route
+              path="/client/gigs/:id"
+              element={<GigDetails />}
+            />
+            <Route
+              path="/client/bookings"
+              element={<MyBookings />}
+            />
             <Route
               path="/client/bookings/:id/confirmation"
               element={<BookingConfirmation />}
@@ -66,12 +85,32 @@ export default function App() {
             />
           </Route>
 
-          <Route element={<ProtectedRoute allowedRoles={['freelancer']} />}>
-            <Route path="/freelancer" element={<FreelancerDashboard />} />
+          <Route
+            element={<ProtectedRoute allowedRoles={['freelancer']} />}
+          >
+            <Route
+              path="/freelancer"
+              element={<FreelancerDashboard />}
+            />
           </Route>
 
-          <Route path="/unauthorised" element={<Unauthorised />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            element={<ProtectedRoute allowedRoles={['admin']} />}
+          >
+            <Route
+              path="/admin"
+              element={<AdminDashboard />}
+            />
+          </Route>
+
+          <Route
+            path="/unauthorised"
+            element={<Unauthorised />}
+          />
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

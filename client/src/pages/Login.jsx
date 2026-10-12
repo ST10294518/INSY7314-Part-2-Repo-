@@ -6,17 +6,13 @@ import { useAuth } from '../hooks/useAuth'
 function dashboardFor(role) {
   if (role === 'client') return '/client'
   if (role === 'freelancer') return '/freelancer'
+  if (role === 'admin') return '/admin'
   return '/unauthorised'
 }
 
 export default function Login() {
   const navigate = useNavigate()
-
-  const {
-    login,
-    loading,
-    sessionExpired,
-  } = useAuth()
+  const { login, loading, sessionExpired } = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -74,10 +70,7 @@ export default function Login() {
 
       <section className="auth-panel">
         <div className="auth-card">
-          <span className="eyebrow">
-            WELCOME BACK
-          </span>
-
+          <span className="eyebrow">WELCOME BACK</span>
           <h2>Sign in to your account</h2>
 
           <p className="subtext">
@@ -141,9 +134,7 @@ export default function Login() {
 
           <p className="auth-switch">
             Don't have an account?{' '}
-            <Link to="/register">
-              Register here
-            </Link>
+            <Link to="/register">Register here</Link>
           </p>
         </div>
       </section>
