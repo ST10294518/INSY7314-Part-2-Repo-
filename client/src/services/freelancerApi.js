@@ -16,3 +16,16 @@ export function createGig(gig, token) {
     }),
   })
 }
+
+export function updateGig(gigId, gig, token) {
+  return apiRequest(`/gigs/${encodeURIComponent(gigId)}`, {
+    method: 'PUT',
+    token,
+    body: JSON.stringify({
+      title: gig.title,
+      description: gig.description,
+      price: gig.price,
+      category: gig.category,
+    }),
+  })
+}

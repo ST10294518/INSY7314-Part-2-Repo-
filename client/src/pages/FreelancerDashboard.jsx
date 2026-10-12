@@ -3,12 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getOwnGigs } from '../services/freelancerApi'
 import CreateGigForm from '../components/CreateGigForm'
+import EditGigForm from '../components/EditGigForm'
 import '../styles/freelancer.css'
 
 export default function FreelancerDashboard() {
   const { user, token, logout } = useAuth()
   const navigate = useNavigate()
   const [reload, setReload] = useState(0)
+  const [editingGigId, setEditingGigId] = useState(null)
+  const [gigSuccess, setGigSuccess] = useState('')
   const [state, setState] = useState({
     loading: true,
     gigs: [],
@@ -68,6 +71,12 @@ export default function FreelancerDashboard() {
     setReload((value) => value + 1)
   }
 
+  function handleGigSaved() {
+    setEditingGigId(null)
+    setGigSuccess('Your gig was updated successfully.')
+    refreshGigs()
+  }
+
   function handleLogout() {
     logout()
     navigate('/login', { replace: true })
@@ -99,6 +108,8 @@ export default function FreelancerDashboard() {
           </div>
         </dl>
       </section>
+
+      {gigSuccess && <p role="status">{gigSuccess}</p>}
 
       <CreateGigForm token={token} onCreated={refreshGigs} />
 
@@ -146,6 +157,25 @@ export default function FreelancerDashboard() {
                     <dd>{gig.category || 'Uncategorised'}</dd>
                   </div>
                 </dl>
+                {editingGigId === gig._id ? (
+                  <EditGigForm
+                    key={gig._id}
+                    gig={gig}
+                    token={token}
+                    onSaved={handleGigSaved}
+                    onCancel={() => setEditingGigId(null)}
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGigSuccess('')
+                      setEditingGigId(gig._id)
+                    }}
+                  >
+                    Edit gig
+                  </button>
+                )}
               </li>
             ))}
           </ul>
