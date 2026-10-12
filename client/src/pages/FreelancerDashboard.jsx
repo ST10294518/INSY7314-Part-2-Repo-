@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getOwnGigs } from '../services/freelancerApi'
+import CreateGigForm from '../components/CreateGigForm'
 import '../styles/freelancer.css'
 
 export default function FreelancerDashboard() {
@@ -98,6 +99,8 @@ export default function FreelancerDashboard() {
           </div>
         </dl>
       </section>
+
+      <CreateGigForm token={token} onCreated={refreshGigs} />
 
       <section aria-labelledby="own-gigs-heading" aria-busy={state.loading}>
         <div className="freelancer-section-heading">
