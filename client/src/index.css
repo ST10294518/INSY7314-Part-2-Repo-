@@ -1,7 +1,7 @@
 /* HUSTLEHUB+ GLOBAL STYLES */
 
 :root {
-  --theme-pink: #F6B7C7;
+  --theme-pink: #F57CB5;
   --theme-text: #17243d;
 
   font-family: Inter, system-ui, "Segoe UI", Arial, sans-serif;
@@ -186,7 +186,7 @@ p {
 .filter-field input:focus,
 .filter-field select:focus {
   border-color: var(--theme-pink);
-  box-shadow: 0 0 0 3px #F6B7C755;
+  box-shadow: 0 0 0 3px #F57CB5;
 }
 
 .primary-button {
