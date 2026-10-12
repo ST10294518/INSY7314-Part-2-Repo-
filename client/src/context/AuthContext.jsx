@@ -1,26 +1,52 @@
 
-import { useState } from 'react'
-import { authApi } from '../services/api'
+import { useEffect, useState } from 'react'
+import { authApi, setUnauthorizedHandler } from '../services/api'
 import { AuthContext } from './AuthStateContext'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [sessionExpired, setSessionExpired] = useState(false)
+
+  useEffect(() => {
+    return setUnauthorizedHandler((rejectedToken) => {
+      if (token && rejectedToken === token) {
+        setUser(null)
+        setToken(null)
+        setSessionExpired(true)
+      }
+    })
+  }, [token])
+
+  async function establishSession(result) {
+    if (!result?.token || !result?.user) {
+      throw new Error('Invalid authentication response.')
+    }
+
+    // Verify the token and current account role with the backend.
+    const verified = await authApi.me(result.token)
+
+    if (
+      !verified?.user ||
+      !['client', 'freelancer'].includes(verified.user.role)
+    ) {
+      throw new Error('Unable to verify account permissions.')
+    }
+
+    setToken(result.token)
+    setUser(verified.user)
+    setSessionExpired(false)
+
+    return verified.user
+  }
 
   async function login(email, password) {
     setLoading(true)
+
     try {
       const result = await authApi.login(email, password)
-
-      if (!result.token || !result.user) {
-        throw new Error('Invalid authentication response.')
-      }
-
-      setToken(result.token)
-      setUser(result.user)
-
-      return result.user
+      return await establishSession(result)
     } finally {
       setLoading(false)
     }
@@ -28,17 +54,15 @@ export function AuthProvider({ children }) {
 
   async function register(email, password, role) {
     setLoading(true)
+
     try {
-      const result = await authApi.register(email, password, role)
+      const result = await authApi.register(
+        email,
+        password,
+        role
+      )
 
-      if (!result.token || !result.user) {
-        throw new Error('Invalid registration response.')
-      }
-
-      setToken(result.token)
-      setUser(result.user)
-
-      return result.user
+      return await establishSession(result)
     } finally {
       setLoading(false)
     }
@@ -47,6 +71,7 @@ export function AuthProvider({ children }) {
   function logout() {
     setUser(null)
     setToken(null)
+    setSessionExpired(false)
   }
 
   return (
@@ -55,6 +80,7 @@ export function AuthProvider({ children }) {
         user,
         token,
         loading,
+        sessionExpired,
         isAuthenticated: Boolean(user && token),
         login,
         register,
