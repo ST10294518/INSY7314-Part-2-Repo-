@@ -1,17 +1,35 @@
 # HustleHub+ — INSY7314 Part 2
 
-HustleHub+ is a freelance marketplace built with MongoDB, Express,
-React and Node.js. Clients browse and book services; Freelancers manage
-Gigs and view received bookings, simulated-payment income and transactions.
+HustleHub+ is a secure MERN-stack freelance marketplace built with MongoDB,
+Express, React and Node.js. It supports three roles: Client, Freelancer and
+Administrator. Clients browse services and create Bookings; Freelancers manage
+Gigs, received Bookings and simulated-payment income; Administrators monitor
+Users, Gigs, Bookings, Transactions and marketplace statistics through a
+protected, read-only dashboard.
+
+> **Payment disclaimer:** All Transactions and revenue figures in this project
+> are simulated. HustleHub+ does not process real payments.
+
+## Features by role
+
+| Role | Main functionality | Access |
+| --- | --- | --- |
+| Client | Register and sign in; browse/filter Gigs; view details; book services; view confirmation and Booking history | `/client` |
+| Freelancer | Register and sign in; create, edit and delete own Gigs; view received Bookings, income and Transactions | `/freelancer` |
+| Administrator | Sign in with a separately provisioned account; view marketplace statistics, Users, Gigs, Bookings and Transactions; refresh and paginate lists | `/admin` |
+
+Only Client and Freelancer accounts can be created through public registration.
+Admin accounts must be provisioned separately.
 
 ## Responsibilities
 
 - Member 1: MongoDB User integration, Gig APIs, Freelancer interface,
   Helmet, CSP, Freelancer React tests and Authentication/Gig API tests.
 - Member 2: shared Login/Register screens, Client interface, Booking and
-  Transaction APIs, income calculations and authentication/booking limits.
-- Member 1's additional Client/Booking testing follows completion of the
-  original work and Member 2's implementation.
+  Transaction APIs, income calculations, authentication/booking limits,
+  and the Admin Dashboard, Admin API and account provisioning.
+- Member 1 also prepared additional Client/Booking integration, Admin API,
+  rate-limit and frontend test evidence after the feature implementations.
 
 Develop is the integration branch. Completed work is submitted through
 pull requests from Feature/Freelancer and Feature/Booking.
@@ -191,7 +209,7 @@ a screenshot demonstrating blocked inline script execution.
 
 ## Tests and evidence
 
-Freelancer React tests:
+The following commands verify the React frontend:
 
 ```powershell
 npm --prefix client test
@@ -199,12 +217,16 @@ npm --prefix client run build
 npm --prefix client run lint
 ```
 
-25 tests across six files passed. They use mocked API responses and cover
-forms, deletion confirmation, dashboard behaviour, received bookings,
-income display, empty states and recovery from errors.
+The original Freelancer-only run passed 25 tests across six files. The later
+combined Client/Freelancer run passed **41 tests across nine files** (25
+Freelancer tests and 16 Client tests). These use mocked API responses and
+cover Gig workflows, Booking UI, navigation, received Bookings, income,
+loading/empty states, form validation and error recovery. The React suite
+does **not** include automated Admin Dashboard component tests; Admin API
+and manual UI verification are recorded separately below.
 
 See client/src/tests/README.md and
-Evidence/Testing/freelancer-react-results.json.
+Evidence/Testing/client-freelancer-react-results.json.
 
 Authentication/Gig API tests passed in both Postman and Newman:
 47 requests, 99 assertions and zero failures. Newman exited with code 0.
@@ -221,7 +243,7 @@ Newman runs through pinned npx outside project dependencies because its
 dependency tree reported vulnerabilities. This does not remediate Newman
 itself; the testing-tool limitation is documented in the API test instructions.
 
-## Troubleshooting and remaining verification
+## Troubleshooting and final sign-off
 
 A frontend HTTP 502 can indicate that the local backend proxy target is
 unavailable. Check the backend terminal and MongoDB connection first.
@@ -231,13 +253,18 @@ network change. Successful retries do not establish a permanent fix.
 Check current IP access, DNS, connectivity and backend startup; do not
 disable MongoDB TLS verification.
 
-Remaining work includes final joint sign-off and demonstration/submission evidence.
-Passing Member 1 tests does not establish full rubric completion.
+Before submission, confirm the agreed integration branch contains all required
+code, the local application still runs, the video/screenshots meet the rubric,
+and the team has completed final joint sign-off. Recorded test passes are
+important evidence but do not, by themselves, guarantee full rubric marks.
 
 ## Freelancer screenshot evidence
 
-The Client and Freelancer interfaces use the shared #F6B7C7 pink accent
-theme, with dark text for readability.
+The Client and Freelancer interfaces use the shared Barbie Pink `#E0218A`
+accent (`--theme-pink`) with dark navy text for readability. The global theme
+variable is defined in `client/src/index.css`; Admin and Freelancer pages also
+have scoped stylesheets. Some evidence screenshots may show the earlier pink
+colour because they were captured before the final styling change.
 
 Screenshots of the Freelancer interface:
 
@@ -313,6 +340,26 @@ User responses exclude password hashes.
 
 Admin lists default to 20 records per page and cap the limit at 50.
 
+
+### Admin API endpoints
+
+All routes below require `Authorization: Bearer <JWT>` from a current User
+whose role is `admin`:
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/api/admin/me` | Verify Admin identity/permissions |
+| GET | `/api/admin/overview` | Read counts and total completed simulated revenue |
+| GET | `/api/admin/users` | Read paginated Users and roles |
+| GET | `/api/admin/gigs` | Read paginated Gig information |
+| GET | `/api/admin/bookings` | Read paginated Booking information |
+| GET | `/api/admin/transactions` | Read paginated simulated Transactions |
+
+List endpoints support `page` and `limit` query parameters; the default
+limit is 20 and the maximum limit is 50. The Admin interface has no edit or
+delete functionality. An unauthenticated request is rejected with HTTP 401,
+while an authenticated non-Admin request is rejected with HTTP 403.
+
 ### Provisioning
 
 scripts/provision-admin.js creates an Admin directly in MongoDB.
@@ -320,9 +367,27 @@ It requires ADMIN_PROVISION_ENABLED=true and private ADMIN_EMAIL and
 ADMIN_PASSWORD environment variables, hashes the password with bcrypt,
 and refuses to alter an existing account.
 
-The password check requires at least 12 characters and no more than
-72 UTF-8 bytes. Provisioning values must remain private, and the enabling
+The password validation requires at least 12 JavaScript string characters
+and no more than 72 UTF-8 bytes. Provisioning values must remain private, and the enabling
 flag and password should be removed after use.
+
+
+Provisioning is disabled by default. For an authorised one-time setup,
+from a **new PowerShell session**, use the same MongoDB database as the app:
+
+```powershell
+$env:ADMIN_PROVISION_ENABLED = "true"
+$env:ADMIN_EMAIL = "admin-demo@example.com"
+$secure = Read-Host "Enter a unique Admin password" -AsSecureString
+$env:ADMIN_PASSWORD = [System.Net.NetworkCredential]::new("", $secure).Password
+node scripts/provision-admin.js
+Remove-Item Env:ADMIN_PASSWORD,Env:ADMIN_EMAIL,Env:ADMIN_PROVISION_ENABLED -ErrorAction SilentlyContinue
+Remove-Variable secure -ErrorAction SilentlyContinue
+```
+
+Use a private Admin email and a strong password. Do not persist the
+provisioning flag or password in `.env` or commit any credentials. The script
+refuses to overwrite an existing account; it does not reset passwords.
 
 An existing shared Admin account was used for verification.
 No additional Admin account was provisioned during these tests.
