@@ -1,6 +1,18 @@
 
 const API_BASE = '/api'
 
+let unauthorizedHandler = null
+
+export function setUnauthorizedHandler(handler) {
+  unauthorizedHandler = handler
+
+  return () => {
+    if (unauthorizedHandler === handler) {
+      unauthorizedHandler = null
+    }
+  }
+}
+
 export async function apiRequest(
   endpoint,
   { token, headers = {}, ...options } = {}
@@ -10,16 +22,26 @@ export async function apiRequest(
     headers: {
       'Content-Type': 'application/json',
       ...headers,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(token
+        ? { Authorization: `Bearer ${token}` }
+        : {}),
     },
   })
 
   const data = await response.json().catch(() => ({}))
 
   if (!response.ok) {
+    // Only invalidate an existing session when an
+    // authenticated request is rejected.
+    // Incorrect Login credentials must not trigger this.
+    if (response.status === 401 && token) {
+      unauthorizedHandler?.(token)
+    }
+
     const error = new Error(
       data.message || `Request failed (${response.status}).`
     )
+
     error.status = response.status
     throw error
   }
@@ -40,7 +62,8 @@ export const authApi = {
       body: JSON.stringify({ email, password, role }),
     }),
 
-  me: (token) => apiRequest('/auth/me', { token }),
+  me: (token) =>
+    apiRequest('/auth/me', { token }),
 }
 
 export const gigApi = {
@@ -65,9 +88,10 @@ export const bookingApi = {
     apiRequest('/bookings/mine', { token }),
 
   getById: (bookingId, token) =>
-    apiRequest(`/bookings/${encodeURIComponent(bookingId)}`, {
-      token,
-    }),
+    apiRequest(
+      `/bookings/${encodeURIComponent(bookingId)}`,
+      { token }
+    ),
 }
 
 export const transactionApi = {
