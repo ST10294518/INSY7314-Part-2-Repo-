@@ -232,7 +232,7 @@ network change. Successful retries do not establish a permanent fix.
 Check current IP access, DNS, connectivity and backend startup; do not
 disable MongoDB TLS verification.
 
-Remaining work includes final integrated frontend CSP checks, additional
+Remaining work includes additional
 feature screenshots, Admin responsibility/role demonstration, final
 Client/Booking/Transaction tests and group demonstration/submission evidence.
 Passing Member 1 tests does not establish full rubric completion.
@@ -254,3 +254,14 @@ Screenshots of the Freelancer interface:
 Frontend CSP evidence:
 
 - [Freelancer inline script blocked](Evidence/Security/freelancer-csp-inline-script-blocked.png)
+
+## Client frontend CSP verification
+
+Client dashboard navigation, Gig details and My Bookings were checked
+in the frontend preview without console errors during normal use.
+An injected inline script was blocked by CSP, and its execution marker
+remained unset.
+
+- [Client inline script blocked](Evidence/Security/client-csp-inline-script-blocked.png)
+
+These checks apply to the local Vite preview configuration.
