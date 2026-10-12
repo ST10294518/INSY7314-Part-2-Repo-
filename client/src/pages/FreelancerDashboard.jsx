@@ -5,6 +5,8 @@ import { getOwnGigs } from '../services/freelancerApi'
 import CreateGigForm from '../components/CreateGigForm'
 import EditGigForm from '../components/EditGigForm'
 import DeleteGigConfirmation from '../components/DeleteGigConfirmation'
+import ReceivedBookings from '../components/ReceivedBookings'
+import FreelancerIncome from '../components/FreelancerIncome'
 import '../styles/freelancer.css'
 
 export default function FreelancerDashboard() {
@@ -197,6 +199,8 @@ export default function FreelancerDashboard() {
           </ul>
         )}
       </section>
+      <ReceivedBookings token={token} />
+      <FreelancerIncome token={token} />
     </main>
   )
 }
