@@ -231,7 +231,7 @@ network change. Successful retries do not establish a permanent fix.
 Check current IP access, DNS, connectivity and backend startup; do not
 disable MongoDB TLS verification.
 
-Remaining work includes Admin responsibility/role demonstration, Client React tests, final group review and demonstration/submission evidence.
+Remaining work includes Admin responsibility/role demonstration, final group review and demonstration/submission evidence.
 Passing Member 1 tests does not establish full rubric completion.
 
 ## Freelancer screenshot evidence
@@ -283,3 +283,19 @@ through the actual API endpoints.
 
 See [Integration test instructions](Postman%20Collection/README-Part2-Integration.md)
 for commands, test data, evidence and limitations.
+
+## Combined Client and Freelancer React tests
+
+The combined run passed 41 tests across nine files:
+25 Freelancer tests and 16 Client tests.
+
+Client coverage includes Gig browsing and filtering, Booking submission,
+confirmation navigation, retry-key preservation, pending controls,
+Booking history and recovery from errors.
+
+Production build and ESLint passed. Application code was unchanged
+when adding these Client tests.
+
+Report: Evidence/Testing/client-freelancer-react-results.json
+
+See client/src/tests/README.md for coverage and execution instructions.
