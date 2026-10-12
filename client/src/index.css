@@ -1,11 +1,11 @@
-
-/* ========================================
-   HUSTLEHUB+ GLOBAL STYLES
-======================================== */
+/* HUSTLEHUB+ GLOBAL STYLES */
 
 :root {
+  --theme-pink: #F6B7C7;
+  --theme-text: #17243d;
+
   font-family: Inter, system-ui, "Segoe UI", Arial, sans-serif;
-  color: #17243d;
+  color: var(--theme-text);
   background: #f6f8fc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -38,12 +38,18 @@ button {
 }
 
 a {
-  color: #355fdd;
+  color: #263d78;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--theme-text);
+  outline-offset: 3px;
 }
 
 h1,
@@ -56,9 +62,7 @@ p {
   line-height: 1.6;
 }
 
-/* ========================================
-   SHARED BRANDING
-======================================== */
+/* SHARED BRANDING */
 
 .brand {
   color: white;
@@ -69,7 +73,7 @@ p {
 }
 
 .brand span {
-  color: #8fb1ff;
+  color: var(--theme-pink);
 }
 
 .brand-dark {
@@ -77,15 +81,13 @@ p {
 }
 
 .eyebrow {
-  color: #5372cc;
+  color: #263d78;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 2px;
 }
 
-/* ========================================
-   LOGIN AND REGISTRATION
-======================================== */
+/* LOGIN AND REGISTRATION */
 
 .auth-layout {
   min-height: 100vh;
@@ -96,13 +98,8 @@ p {
 }
 
 .auth-intro {
-  background: linear-gradient(
-    150deg,
-    #111d3b,
-    #273f86 65%,
-    #4b65bd
-  );
-  color: white;
+  background: var(--theme-pink);
+  color: var(--theme-text);
   padding: clamp(30px, 5vw, 76px);
   display: flex;
   flex-direction: column;
@@ -110,12 +107,14 @@ p {
   gap: 70px;
 }
 
+.auth-intro .brand,
+.auth-intro .brand span,
 .auth-intro .eyebrow {
-  color: #a7bfff;
+  color: var(--theme-text);
 }
 
 .auth-intro h1 {
-  color: white;
+  color: var(--theme-text);
   font-size: clamp(38px, 4vw, 64px);
   letter-spacing: -2px;
   line-height: 1.1;
@@ -124,14 +123,14 @@ p {
 }
 
 .auth-intro p {
-  color: #d9e2fb;
+  color: var(--theme-text);
   font-size: 17px;
   line-height: 1.75;
   max-width: 490px;
 }
 
 .intro-footer {
-  color: #c3d1f3;
+  color: var(--theme-text);
   font-size: 13px;
 }
 
@@ -186,26 +185,27 @@ p {
 .auth-card select:focus,
 .filter-field input:focus,
 .filter-field select:focus {
-  border-color: #5174e4;
-  box-shadow: 0 0 0 3px #5174e422;
+  border-color: var(--theme-pink);
+  box-shadow: 0 0 0 3px #F6B7C755;
 }
 
 .primary-button {
   display: inline-block;
   margin-top: 24px;
-  background: #315de0;
+  background: var(--theme-pink);
   border: 0;
   border-radius: 10px;
   padding: 15px 20px;
   font-weight: 700;
-  color: white;
+  color: var(--theme-text);
   text-align: center;
   text-decoration: none;
 }
 
 .primary-button:hover {
-  background: #254fc8;
-  color: white;
+  background: var(--theme-pink);
+  color: var(--theme-text);
+  filter: brightness(0.96);
   text-decoration: none;
 }
 
@@ -231,9 +231,7 @@ p {
   font-size: 14px;
 }
 
-/* ========================================
-   DASHBOARD LAYOUT
-======================================== */
+/* DASHBOARD LAYOUT */
 
 .dashboard {
   min-height: 100vh;
@@ -260,7 +258,7 @@ p {
 }
 
 .outline-button:hover {
-  background: #f1f5ff;
+  background: var(--theme-pink);
   text-decoration: none;
 }
 
@@ -309,9 +307,7 @@ p {
   color: #66728b;
 }
 
-/* ========================================
-   GIG BROWSING
-======================================== */
+/* GIG BROWSING */
 
 .gig-section {
   margin-top: 46px;
@@ -382,8 +378,8 @@ p {
   align-self: flex-start;
   border-radius: 20px;
   padding: 6px 10px;
-  background: #edf2ff;
-  color: #315de0;
+  background: var(--theme-pink);
+  color: var(--theme-text);
   font-size: 12px;
   font-weight: 700;
 }
@@ -431,9 +427,7 @@ p {
   color: #66728b;
 }
 
-/* ========================================
-   GIG DETAILS AND BOOKING
-======================================== */
+/* GIG DETAILS AND BOOKING */
 
 .back-link {
   display: inline-block;
@@ -499,7 +493,7 @@ p {
   flex-direction: column;
   gap: 8px;
   padding: 17px;
-  background: #f1f5ff;
+  background: var(--theme-pink);
   border-radius: 10px;
   font-size: 14px;
 }
@@ -518,9 +512,7 @@ p {
   text-align: center;
 }
 
-/* ========================================
-   BOOKING CONFIRMATION AND DETAILS
-======================================== */
+/* BOOKING CONFIRMATION AND DETAILS */
 
 .confirmation-card,
 .booking-details-card {
@@ -591,9 +583,7 @@ p {
   margin-top: 0;
 }
 
-/* ========================================
-   MY BOOKINGS HISTORY
-======================================== */
+/* MY BOOKINGS HISTORY */
 
 .booking-list {
   display: flex;
@@ -632,9 +622,7 @@ p {
   margin-top: 0;
 }
 
-/* ========================================
-   ACCESS RESTRICTIONS
-======================================== */
+/* ACCESS RESTRICTIONS */
 
 .message-page {
   min-height: 100vh;
@@ -646,9 +634,7 @@ p {
   text-align: center;
 }
 
-/* ========================================
-   RESPONSIVE DESIGN
-======================================== */
+/* RESPONSIVE DESIGN */
 
 @media (max-width: 1050px) {
   .gig-grid {
