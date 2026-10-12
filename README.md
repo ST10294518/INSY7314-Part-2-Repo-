@@ -110,7 +110,7 @@ Protected requests load the current User document from MongoDB.
 
 Public registration accepts Client and Freelancer roles only.
 The schema supports Admin, but public registration cannot create Admins.
-Admin provisioning, permissions and demonstration remain a shared task.
+Member 2 implemented separate Admin provisioning and an Admin-only oversight dashboard.
 
 Existing users.json accounts are not automatically migrated. Register
 development accounts through the MongoDB authentication API.
@@ -231,7 +231,7 @@ network change. Successful retries do not establish a permanent fix.
 Check current IP access, DNS, connectivity and backend startup; do not
 disable MongoDB TLS verification.
 
-Remaining work includes Admin responsibility/role demonstration, final group review and demonstration/submission evidence.
+Remaining work includes final joint sign-off and demonstration/submission evidence.
 Passing Member 1 tests does not establish full rubric completion.
 
 ## Freelancer screenshot evidence
@@ -299,3 +299,77 @@ when adding these Client tests.
 Report: Evidence/Testing/client-freelancer-react-results.json
 
 See client/src/tests/README.md for coverage and execution instructions.
+
+## Admin permissions and verification
+
+Member 2 implemented the Admin dashboard and backend.
+Admins have read-only oversight of users, Gigs, Bookings and Transactions,
+plus overview counts and total completed simulated revenue.
+This access is separate from Client booking and Freelancer Gig ownership.
+
+All /api/admin routes require a valid JWT and the current MongoDB
+User's Admin role. Public registration cannot create Admin accounts.
+User responses exclude password hashes.
+
+Admin lists default to 20 records per page and cap the limit at 50.
+
+### Provisioning
+
+scripts/provision-admin.js creates an Admin directly in MongoDB.
+It requires ADMIN_PROVISION_ENABLED=true and private ADMIN_EMAIL and
+ADMIN_PASSWORD environment variables, hashes the password with bcrypt,
+and refuses to alter an existing account.
+
+The password check requires at least 12 characters and no more than
+72 UTF-8 bytes. Provisioning values must remain private, and the enabling
+flag and password should be removed after use.
+
+An existing shared Admin account was used for verification.
+No additional Admin account was provisioned during these tests.
+
+### Recorded verification
+
+The Admin Newman suite passed 41 requests and 61 assertions,
+with zero failures and exit code 0.
+
+Verified all six Admin endpoints:
+
+- Admin requests return 200.
+- Client and Freelancer requests return 403.
+- Missing, invalid and expired JWTs return 401.
+- Password fields are excluded.
+- List pagination is returned and the maximum limit is enforced.
+- Public Admin registration is rejected.
+
+Manual browser checks passed for Users, Gigs, Bookings, Transactions,
+refresh, pagination and logout. Client/Freelancer page access was blocked.
+Opening /admin after logout redirected to Login.
+
+The post-merge Client/Freelancer suite also passed all 41 React tests.
+Frontend build and ESLint passed. These component tests do not include
+automated Admin dashboard coverage.
+
+### Test execution and evidence
+
+Collection:
+Postman Collection/HustleHub-Part2-Admin-Tests.postman_collection.json
+
+Supply adminEmail, adminPassword and expiredToken through a private
+temporary Postman environment. Use an expired JWT signed with the current
+local JWT secret. Never commit the environment or credentials.
+
+Run from the repository root with the HTTPS backend running:
+
+```powershell
+npx --yes --package=newman@6.2.3 newman run "Postman Collection/HustleHub-Part2-Admin-Tests.postman_collection.json" --environment "<PRIVATE_ENVIRONMENT_PATH>" --ssl-extra-ca-certs certs/cert.pem --reporters cli,junit --reporter-junit-export Evidence/Testing/admin-api-results.xml --timeout-request 20000 --bail
+```
+
+Remove the private temporary environment after execution.
+The suite creates two ordinary test accounts and reads existing Admin data.
+Registration attempts remain subject to the configured rate limit.
+The Newman dependency limitation described earlier also applies here.
+
+Evidence:
+
+- [Admin API report](Evidence/Testing/admin-api-results.xml)
+- [Admin Newman summary](Evidence/Testing/admin-api-newman-run.png)
